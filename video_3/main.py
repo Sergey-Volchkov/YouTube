@@ -10,13 +10,11 @@ from datetime import datetime
 import random
 import time
 import get_pictures
-import data
 
-login, password,token = data.d()
-
+#login, password='login','password'
 # vk_session = vk_api.VkApi(login, password)
 # vk_session.auth()
-
+token ='token'
 vk_session = vk_api.VkApi(token=token)
 
 session_api = vk_session.get_api()
