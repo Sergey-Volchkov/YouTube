@@ -3,7 +3,7 @@ import vk_api
 from datetime import datetime
 
 login, password = "login", "password"
-vk_session = vk_api.VkApi(login, password)
+vk_session = vk_api.VkApi(login=login, password=password, app_id=2685278)
 vk_session.auth()
 
 # token = "ЗдесьЕстьВашТокен"
