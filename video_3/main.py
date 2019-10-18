@@ -55,34 +55,33 @@ def create_keyboard(response):
 def send_message(vk_session, id_type, id, message=None, attachment=None, keyboard=None):
     vk_session.method('messages.send',{id_type: id, 'message': message, 'random_id': random.randint(-2147483648, +2147483648), "attachment": attachment, 'keyboard': keyboard})
 
-while True:
-    for event in longpoll.listen():
-        if event.type == VkEventType.MESSAGE_NEW:
-            print('Сообщение пришло в: ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
-            print('Текст сообщения: ' + str(event.text))
-            print(event.user_id)
-            response = event.text.lower()
-            keyboard = create_keyboard(response)
+for event in longpoll.listen():
+    if event.type == VkEventType.MESSAGE_NEW:
+        print('Сообщение пришло в: ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
+        print('Текст сообщения: ' + str(event.text))
+        print(event.user_id)
+        response = event.text.lower()
+        keyboard = create_keyboard(response)
 
-            if event.from_user and not event.from_me:
-                if response == "котики":
-                    attachment = get_pictures.get(vk_session, -130670107, session_api)
-                    send_message(vk_session, 'user_id', event.user_id, message='Держи котиков!', attachment=attachment, keyboard=keyboard)
-                elif response == "привет":
-                    send_message(vk_session, 'user_id', event.user_id, message='Нажми на кнопку, чтобы получить список команд',keyboard=keyboard)
-                elif response == "тест":
-                    send_message(vk_session, 'user_id', event.user_id, message= 'Тестовые команды',keyboard=keyboard)
-                elif response=='команды':
-                    send_message(vk_session, 'user_id', event.user_id, message='Список команд бота: \n \n 1)Команда1 \n 2)Команда2')
+        if event.from_user and not event.from_me:
+            if response == "котики":
+                attachment = get_pictures.get(vk_session, -130670107, session_api)
+                send_message(vk_session, 'user_id', event.user_id, message='Держи котиков!', attachment=attachment, keyboard=keyboard)
+            elif response == "привет":
+                send_message(vk_session, 'user_id', event.user_id, message='Нажми на кнопку, чтобы получить список команд',keyboard=keyboard)
+            elif response == "тест":
+                send_message(vk_session, 'user_id', event.user_id, message= 'Тестовые команды',keyboard=keyboard)
+            elif response=='команды':
+                send_message(vk_session, 'user_id', event.user_id, message='Список команд бота: \n \n 1)Команда1 \n 2)Команда2')
 
-                elif response=='закрыть':
-                    send_message(vk_session, 'user_id', event.user_id, message='Закрыть',keyboard=keyboard)
-
+            elif response=='закрыть':
+                send_message(vk_session, 'user_id', event.user_id, message='Закрыть',keyboard=keyboard)
 
 
-            elif event.from_chat :
-                if response == "котики":
-                    attachment = get_pictures.get(vk_session, -130670107, session_api)
-                    print(attachment)
-                    send_message(vk_session, 'chat_id', event.chat_id, message='Держите котиков!', attachment= attachment)
-            print('-' * 30)
+
+        elif event.from_chat :
+            if response == "котики":
+                attachment = get_pictures.get(vk_session, -130670107, session_api)
+                print(attachment)
+                send_message(vk_session, 'chat_id', event.chat_id, message='Держите котиков!', attachment= attachment)
+        print('-' * 30)
