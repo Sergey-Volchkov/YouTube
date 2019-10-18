@@ -29,35 +29,34 @@ def send_message(session_api, peer_id, message=None, attachment=None, keyboard=N
                               attachment=attachment, keyboard=keyboard, payload=payload)
 
 
-while True:
-    for event in longpoll.listen():
-        if event.type == VkBotEventType.MESSAGE_NEW:
-            # ДЛЯ СООБЩЕНИЙ ИЗ БЕСЕДОК
-            if event.obj.peer_id != event.obj.from_id:
+for event in longpoll.listen():
+    if event.type == VkBotEventType.MESSAGE_NEW:
+        # ДЛЯ СООБЩЕНИЙ ИЗ БЕСЕДОК
+        if event.obj.peer_id != event.obj.from_id:
 
-                # members_list = session_api.messages.getConversationMembers(peer_id=event.obj.peer_id, fields='profiles')['profiles']
-                sender_name = list(filter(lambda name: name['id'] == event.obj.from_id, [name for name in session_api.messages.getConversationMembers(peer_id=event.obj.peer_id, fields='profiles')['profiles']]))[0]
-                last_and_first_name = str(sender_name['first_name']) + ' ' + str(sender_name['last_name'])
+            # members_list = session_api.messages.getConversationMembers(peer_id=event.obj.peer_id, fields='profiles')['profiles']
+            sender_name = list(filter(lambda name: name['id'] == event.obj.from_id, [name for name in session_api.messages.getConversationMembers(peer_id=event.obj.peer_id, fields='profiles')['profiles']]))[0]
+            last_and_first_name = str(sender_name['first_name']) + ' ' + str(sender_name['last_name'])
 
-                # print(members_list)
-                send_message(session_api,peer_id=event.obj.peer_id, message='Привет, {0}!'.format(last_and_first_name))
-                # for element in members_list:
-                #     print(element['i)
-                # print([[name['id'], name['first_name']] for name in members_list])
-                # print(event.obj.from_id)
-                # print(sender_name)
-                # print(event.type)
-                print(event)
-                # print(event.obj)
-                # print(event.object)
-                # print(event.obj)
-                # for key, value in event.obj.items():
-                #     print(str(key) +" : " + str(value))
-                print('-' * 30)
-            if event.obj.peer_id == event.obj.from_id:
-                print(event.type)
-                print(event)
-                print(event.obj)
-                for key, value in event.obj.items():
-                    print(str(key) + " : " + str(value))
-                print('-' * 30)
+            # print(members_list)
+            send_message(session_api,peer_id=event.obj.peer_id, message='Привет, {0}!'.format(last_and_first_name))
+            # for element in members_list:
+            #     print(element['i)
+            # print([[name['id'], name['first_name']] for name in members_list])
+            # print(event.obj.from_id)
+            # print(sender_name)
+            # print(event.type)
+            print(event)
+            # print(event.obj)
+            # print(event.object)
+            # print(event.obj)
+            # for key, value in event.obj.items():
+            #     print(str(key) +" : " + str(value))
+            print('-' * 30)
+        if event.obj.peer_id == event.obj.from_id:
+            print(event.type)
+            print(event)
+            print(event.obj)
+            for key, value in event.obj.items():
+                print(str(key) + " : " + str(value))
+            print('-' * 30)
