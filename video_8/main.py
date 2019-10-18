@@ -33,26 +33,25 @@ def create_keyboard(payload):
     return keyboard.get_keyboard()
 
 
-while True:
-    for event in longpoll.listen():
-        if event.type == VkBotEventType.MESSAGE_NEW:
-            print('Текст сообщения: ' + str(event.obj.text))
-            if event.obj.payload != None:
-                payload = int(event.obj.payload)
+for event in longpoll.listen():
+    if event.type == VkBotEventType.MESSAGE_NEW:
+        print('Текст сообщения: ' + str(event.obj.text))
+        if event.obj.payload != None:
+            payload = int(event.obj.payload)
+        else:
+            payload = None
+
+        response = event.obj.text.lower()
+        if not event.obj.from_me:
+
+            keyboard = create_keyboard(payload)
+            if response == 'начать!' or payload==1:
+                send_message(peer_id=event.obj.peer_id,message='О чем ты хочешь узнать?',keyboard=keyboard)
+            elif payload==None:
+                send_message(peer_id=event.obj.peer_id,message='Нажми на кнопку чтобы начать общение с ботом!',keyboard=keyboard)
+            elif payload ==2:
+                send_message(peer_id=event.obj.peer_id,message='Тут могла бы быть информация о рыбалке',keyboard=keyboard)
+            elif payload ==3:
+                send_message(peer_id=event.obj.peer_id,message='Здесь размещена информация о машинах',keyboard=keyboard)
             else:
-                payload = None
-
-            response = event.obj.text.lower()
-            if not event.obj.from_me:
-
-                keyboard = create_keyboard(payload)
-                if response == 'начать!' or payload==1:
-                    send_message(peer_id=event.obj.peer_id,message='О чем ты хочешь узнать?',keyboard=keyboard)
-                elif payload==None:
-                    send_message(peer_id=event.obj.peer_id,message='Нажми на кнопку чтобы начать общение с ботом!',keyboard=keyboard)
-                elif payload ==2:
-                    send_message(peer_id=event.obj.peer_id,message='Тут могла бы быть информация о рыбалке',keyboard=keyboard)
-                elif payload ==3:
-                    send_message(peer_id=event.obj.peer_id,message='Здесь размещена информация о машинах',keyboard=keyboard)
-                else:
-                    send_message(peer_id=event.obj.peer_id,message='Рассказать о чём то ещё?',keyboard=keyboard)
+                send_message(peer_id=event.obj.peer_id,message='Рассказать о чём то ещё?',keyboard=keyboard)
