@@ -11,9 +11,9 @@ vk_session.auth(token_only=True)
 
 session_api = vk_session.get_api()
 longpoll = VkLongPoll(vk_session)
+#While True здесь оказался не нужен. Его функцию выполняет for event in longpoll.listen(): Спасибо подписчику за это уточнение.
 
-while True:
-    for event in longpoll.listen():
-        if event.type == VkEventType.MESSAGE_NEW:
-            print('Сообщение пришло в: ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
-            print('Текст сообщения: ' + str(event.text))
+for event in longpoll.listen():
+    if event.type == VkEventType.MESSAGE_NEW:
+        print('Сообщение пришло в: ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
+        print('Текст сообщения: ' + str(event.text))
