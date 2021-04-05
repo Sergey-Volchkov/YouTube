@@ -1,0 +1,26 @@
+version: "2.0"
+   
+services:
+
+  nginx:
+      build: 
+        context: ./nginx
+      container_name: nginx
+      links:
+        - uwsgi  
+      volumes_from:
+        - uwsgi
+      ports:
+        - "8000:8000"        
+
+  uwsgi:
+      build: 
+        context: ./andrey-django
+      container_name: uwsgi
+      environment:
+        SECRETKEY: ""
+      volumes:
+        - ./nginx:/opt/conf
+        - ./andrey-django:/opt/app
+      expose:
+        - "8001"
